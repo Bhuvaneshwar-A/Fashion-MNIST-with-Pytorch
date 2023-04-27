@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MNIST Predictor</title>
+</head>
+<body>
+	<h1>MNIST Predictor</h1>
+	<form method="POST" action="/predict" enctype="multipart/form-data">
+		<label for="image">Choose an image file:</label>
+		<input type="file" name="image" id="image">
+		<input type="submit" value="Predict">
+	</form>
+	<div id="result"></div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$('form').submit(function(event) {
+			event.preventDefault();
+			var formData = new FormData($(this)[0]);
+			$.ajax({
+				url: '/predict',
+				type: 'POST',
+				data: formData,
+				contentType: false,
+				processData: false,
+				success: function(response) {
+					$('#result').html('Prediction: ' + response.result);
+				},
+				error: function() {
+					alert('Error: Failed to make prediction');
+				}
+			});
+		});
+	</script>
+</body>
+</html>
